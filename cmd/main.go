@@ -8,6 +8,7 @@ import (
 	"github.com/AnanyaDevGo/microServices-grpc-project_auth-svc/pkg/config"
 	"github.com/AnanyaDevGo/microServices-grpc-project_auth-svc/pkg/db"
 	"github.com/AnanyaDevGo/microServices-grpc-project_auth-svc/pkg/pb"
+	"github.com/AnanyaDevGo/microServices-grpc-project_auth-svc/pkg/services"
 	"github.com/AnanyaDevGo/microServices-grpc-project_auth-svc/pkg/utils"
 	"google.golang.org/grpc"
 )
