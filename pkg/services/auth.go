@@ -8,7 +8,6 @@ import (
 	"github.com/AnanyaDevGo/microServices-grpc-project_auth-svc/pkg/models"
 	"github.com/AnanyaDevGo/microServices-grpc-project_auth-svc/pkg/pb"
 	"github.com/AnanyaDevGo/microServices-grpc-project_auth-svc/pkg/utils"
-
 )
 
 type Server struct {
