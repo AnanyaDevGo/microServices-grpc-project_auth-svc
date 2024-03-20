@@ -1,6 +1,7 @@
 package db
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/AnanyaDevGo/microServices-grpc-project_auth-svc/pkg/models"
@@ -12,9 +13,10 @@ type Handler struct {
 	DB *gorm.DB
 }
 
-func Init(url string) Handler {
-	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
+func Init(dbHost, dbPort, dbUser, dbPassword, dbName string) Handler {
+	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbPort, dbUser, dbPassword, dbName)
 
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalln(err)
 	}

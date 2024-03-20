@@ -4,7 +4,11 @@ import "github.com/spf13/viper"
 
 type Config struct {
 	Port         string `mapstructure:"PORT"`
-	DBUrl        string `mapstructure:"DB_URL"`
+	DBHost       string `mapstructure:"DBHost"`
+	DBPort       string `mapstructure:"DBPort"`
+	DBUser       string `mapstructure:"DBUser"`
+	DBPassword   string `mapstructure:"DBPassword"`
+	DBName       string `mapstructure:"DBName"`
 	JWTSecretKey string `mapstructure:"JWT_SECRET_KEY"`
 }
 

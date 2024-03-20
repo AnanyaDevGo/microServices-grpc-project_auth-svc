@@ -20,7 +20,7 @@ func main() {
 		log.Fatalln("Failed at config", err)
 	}
 
-	h := db.Init(c.DBUrl)
+	h := db.Init(c.DBHost, c.DBPort, c.DBUser, c.DBPassword, c.DBName)
 
 	jwt := utils.JwtWrapper{
 		SecretKey:       c.JWTSecretKey,
@@ -31,7 +31,7 @@ func main() {
 	lis, err := net.Listen("tcp", c.Port)
 
 	if err != nil {
-		log.Fatalln("Failed to listing:", err)
+		log.Fatalln("Failed to listen:", err)
 	}
 
 	fmt.Println("Auth Svc on", c.Port)
