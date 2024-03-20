@@ -22,6 +22,7 @@ func Init(dbHost, dbPort, dbUser, dbPassword, dbName string) Handler {
 	}
 
 	db.AutoMigrate(&models.User{})
+	
 
 	return Handler{db}
 }

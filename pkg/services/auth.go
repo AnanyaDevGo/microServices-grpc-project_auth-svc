@@ -63,6 +63,33 @@ func (s *Server) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResp
 	}, nil
 }
 
+func (s *Server) AdminLogin(ctx context.Context, req *pb.AdminLoginRequest) (*pb.AdminLoginResponse, error) {
+	var admin models.User
+
+	if result := s.H.DB.Where(&models.User{Email: req.Email}).First(&admin); result.Error != nil {
+		return &pb.AdminLoginResponse{
+			Status: http.StatusNotFound,
+			Error:  "admin not found 1",
+		}, nil
+	}
+
+	match := utils.CheckPasswordHash(req.Password, admin.Password)
+
+	if !match {
+		return &pb.AdminLoginResponse{
+			Status: http.StatusNotFound,
+			Error:  "admin not found 2",
+		}, nil
+	}
+
+	token, _ := s.Jwt.GenerateTokenAdmin(admin)
+
+	return &pb.AdminLoginResponse{
+		Status: http.StatusOK,
+		Token:  token,
+	}, nil
+}
+
 func (s *Server) Validate(ctx context.Context, req *pb.ValidateRequest) (*pb.ValidateResponse, error) {
 	claims, err := s.Jwt.ValidateToken(req.Token)
 
@@ -85,25 +112,6 @@ func (s *Server) Validate(ctx context.Context, req *pb.ValidateRequest) (*pb.Val
 	return &pb.ValidateResponse{
 		Status: http.StatusOK,
 		UserId: user.Id,
+		Role:   claims.Role,
 	}, nil
 }
-// func (s *Server) AdminRegister(ctx context.Context, req *pb.AdminRegisterRequest) (*pb.AdminRegisterResponse, error) {
-// 	var user models.User
-
-// 	if result := s.H.DB.Where(&models.User{Email: req.Email}).First(&user); result.Error == nil {
-// 		return &pb.AdminRegisterResponse{
-// 			Status: http.StatusConflict,
-// 			Error:  "E-Mail already exists",
-// 		}, nil
-// 	}
-
-// 	user.Email = req.Email
-// 	user.Password = utils.HashPassword(req.Password)
-// 	user.IsAdmin = true
-
-// 	s.H.DB.Create(&user)
-
-// 	return &pb.AdminRegisterResponse{
-// 		Status: http.StatusCreated,
-// 	}, nil
-// }

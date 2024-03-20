@@ -18,12 +18,37 @@ type jwtClaims struct {
 	jwt.StandardClaims
 	Id    int64
 	Email string
+	Role  string
 }
 
 func (w *JwtWrapper) GenerateToken(user models.User) (signedToken string, err error) {
 	claims := &jwtClaims{
 		Id:    user.Id,
 		Email: user.Email,
+		Role:  "user",
+
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(w.ExpirationHours)).Unix(),
+			Issuer:    w.Issuer,
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	signedToken, err = token.SignedString([]byte(w.SecretKey))
+
+	if err != nil {
+		return "", err
+	}
+
+	return signedToken, nil
+}
+func (w *JwtWrapper) GenerateTokenAdmin(admin models.User) (signedToken string, err error) {
+	claims := &jwtClaims{
+		Id:    admin.Id,
+		Email: admin.Email,
+		Role:  "admin",
+
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(w.ExpirationHours)).Unix(),
 			Issuer:    w.Issuer,
