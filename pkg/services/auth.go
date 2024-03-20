@@ -87,3 +87,23 @@ func (s *Server) Validate(ctx context.Context, req *pb.ValidateRequest) (*pb.Val
 		UserId: user.Id,
 	}, nil
 }
+// func (s *Server) AdminRegister(ctx context.Context, req *pb.AdminRegisterRequest) (*pb.AdminRegisterResponse, error) {
+// 	var user models.User
+
+// 	if result := s.H.DB.Where(&models.User{Email: req.Email}).First(&user); result.Error == nil {
+// 		return &pb.AdminRegisterResponse{
+// 			Status: http.StatusConflict,
+// 			Error:  "E-Mail already exists",
+// 		}, nil
+// 	}
+
+// 	user.Email = req.Email
+// 	user.Password = utils.HashPassword(req.Password)
+// 	user.IsAdmin = true
+
+// 	s.H.DB.Create(&user)
+
+// 	return &pb.AdminRegisterResponse{
+// 		Status: http.StatusCreated,
+// 	}, nil
+// }
